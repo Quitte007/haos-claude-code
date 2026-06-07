@@ -16,6 +16,14 @@ if [ -n "${SUPERVISOR_TOKEN}" ]; then
     export HA_TOKEN="${SUPERVISOR_TOKEN}"
 fi
 
+# Deploy HA API instructions to /data/CLAUDE.md on first run only.
+# The "if [ ! -f ]" guard means updates NEVER overwrite this file —
+# the user's personal notes and Claude's memory are always preserved.
+if [ ! -f /data/CLAUDE.md ]; then
+    cp /opt/claude-ha-template.md /data/CLAUDE.md
+    echo "[Claude Code Addon] Deployed HA instructions to /data/CLAUDE.md"
+fi
+
 # Set working directory to HA config (path differs across HA versions)
 cd /homeassistant 2>/dev/null || cd /config 2>/dev/null || cd /data
 
@@ -29,9 +37,9 @@ cat << 'EOF'
 ╔══════════════════════════════════════════════════════════════╗
 ║           Claude Code — Home Assistant Edition               ║
 ║                                                              ║
-║  /homeassistant  → your HA config (automations, etc.)       ║
-║  /share          → shared storage                            ║
-║  curl http://supervisor/...  → Supervisor API                ║
+║  /config   → HA config (automations, scripts, etc.)         ║
+║  /data     → Addon storage (credentials, memory, CLAUDE.md) ║
+║  /share    → shared storage                                  ║
 ╚══════════════════════════════════════════════════════════════╝
 EOF
 
@@ -39,11 +47,11 @@ if [ "${LOGGED_IN}" -eq 0 ]; then
     cat << 'EOF'
 
   ┌──────────────────────────────────────────────────────────┐
-  │  FIRST RUN — you are not logged in yet.                   │
+  │  FIRST RUN — you are not logged in yet.                  │
   │                                                          │
-  │  Claude will now open. Type:   /login                     │
+  │  Claude will now open. Type:   /login                    │
   │  then choose "Claude account (Pro/Max)" and follow the   │
-  │  link. Your login is saved in /data and survives restarts.│
+  │  link. Your login is saved in /data and survives restarts│
   └──────────────────────────────────────────────────────────┘
 
 EOF
