@@ -5,6 +5,10 @@
 export HOME=/data
 export TERM=xterm-256color
 
+# HA addons run as root inside an isolated container. Claude Code refuses
+# --dangerously-skip-permissions as root unless it knows it's sandboxed.
+export IS_SANDBOX=1
+
 mkdir -p /data/.claude
 
 # HA Supervisor token is injected automatically as SUPERVISOR_TOKEN
