@@ -1,0 +1,53 @@
+name: "Claude Code CLI"
+description: "Claude Code AI assistant with full access to your Home Assistant configuration"
+version: "1.0.0"
+slug: "claude_code"
+init: false
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+startup: services
+boot: manual
+
+options:
+  anthropic_api_key: ""
+  ha_url: "http://homeassistant:8123"
+  claude_model: "claude-sonnet-4-6"
+  terminal_cols: 220
+  terminal_rows: 50
+
+schema:
+  anthropic_api_key: str
+  ha_url: str
+  claude_model: str
+  terminal_cols: int
+  terminal_rows: int
+
+ports:
+  7681/tcp: null
+
+ingress: true
+ingress_port: 7681
+ingress_stream: true
+panel_icon: mdi:robot
+panel_title: "Claude Code"
+
+map:
+  - config:rw
+  - share:rw
+  - ssl:ro
+  - backup:rw
+  - media:rw
+  - addon_config:rw
+
+homeassistant_api: true
+hassio_api: true
+hassio_role: manager
+
+environment:
+  TERM: xterm-256color
+  COLORTERM: truecolor
+
+image: "ghcr.io/{image}"

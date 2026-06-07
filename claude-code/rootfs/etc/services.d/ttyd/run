@@ -1,0 +1,26 @@
+#!/usr/bin/with-contenv bashio
+
+# Read addon options
+ANTHROPIC_API_KEY=$(bashio::config 'anthropic_api_key')
+HA_URL=$(bashio::config 'ha_url')
+MODEL=$(bashio::config 'claude_model')
+COLS=$(bashio::config 'terminal_cols')
+ROWS=$(bashio::config 'terminal_rows')
+
+export ANTHROPIC_API_KEY
+export HOME=/root
+
+# Give Claude access to HA config and supervisor
+export HA_URL
+export SUPERVISOR_TOKEN="${SUPERVISOR_TOKEN}"
+
+bashio::log.info "Starting Claude Code terminal on port 7681..."
+
+exec ttyd \
+    --port 7681 \
+    --interface 0.0.0.0 \
+    --writable \
+    --max-clients 2 \
+    --client-option "fontSize=14" \
+    --client-option "fontFamily=monospace" \
+    /usr/local/bin/claude-ha-wrapper.sh
