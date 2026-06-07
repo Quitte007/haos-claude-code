@@ -1,19 +1,26 @@
 #!/bin/bash
 # Wrapper that sets up HA context before launching Claude Code
 
-export HOME=/root
+# Credentials persist in /data (HA addon persistent volume) via HOME=/data
+export HOME=/data
 export TERM=xterm-256color
 
+mkdir -p /data/.claude
+
 # HA Supervisor token is injected automatically as SUPERVISOR_TOKEN
-# Use it for HA API calls
 if [ -n "${SUPERVISOR_TOKEN}" ]; then
     export HA_TOKEN="${SUPERVISOR_TOKEN}"
 fi
 
-# Set working directory to HA config
-cd /homeassistant || cd /config || cd /root
+# Set working directory to HA config (path differs across HA versions)
+cd /homeassistant 2>/dev/null || cd /config 2>/dev/null || cd /data
 
-# Show welcome message
+# Detect whether we're authenticated (subscription login or API key)
+LOGGED_IN=0
+if [ -f /data/.claude/.credentials.json ] || [ -n "${ANTHROPIC_API_KEY}" ]; then
+    LOGGED_IN=1
+fi
+
 cat << 'EOF'
 ╔══════════════════════════════════════════════════════════════╗
 ║           Claude Code — Home Assistant Edition               ║
@@ -22,7 +29,27 @@ cat << 'EOF'
 ║  /share          → shared storage                            ║
 ║  curl http://supervisor/...  → Supervisor API                ║
 ╚══════════════════════════════════════════════════════════════╝
-
 EOF
 
-exec claude --dangerously-skip-permissions
+if [ "${LOGGED_IN}" -eq 0 ]; then
+    cat << 'EOF'
+
+  ┌──────────────────────────────────────────────────────────┐
+  │  FIRST RUN — you are not logged in yet.                   │
+  │                                                          │
+  │  Claude will now open. Type:   /login                     │
+  │  then choose "Claude account (Pro/Max)" and follow the   │
+  │  link. Your login is saved in /data and survives restarts.│
+  └──────────────────────────────────────────────────────────┘
+
+EOF
+fi
+
+# Loop so that if claude exits (e.g. after /login or a crash) the terminal
+# restarts it instead of dropping to an empty shell.
+while true; do
+    claude --dangerously-skip-permissions
+    echo ""
+    echo "Claude exited. Restarting in 3s... (close the tab to stop)"
+    sleep 3
+done

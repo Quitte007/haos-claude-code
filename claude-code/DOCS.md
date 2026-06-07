@@ -4,17 +4,26 @@
 
 1. Add this repository to your HA addon store
 2. Install the addon
-3. Configure your Anthropic API key in the addon options
-4. Start the addon
-5. Open the Web UI via the sidebar panel
+3. Start the addon
+4. Open the Web UI via the sidebar panel
+5. On first run, type `/login` and sign in with your Claude Pro/Max account
+
+Your login is stored in `/data` (the addon's persistent volume) and survives
+restarts, updates, and reboots — you only log in once.
 
 ## Configuration
 
 | Option | Description | Default |
 |--------|-------------|---------|
-| `anthropic_api_key` | Your Anthropic API key (required) | — |
-| `ha_url` | Home Assistant URL for API calls | `http://homeassistant:8123` |
 | `claude_model` | Claude model to use | `claude-sonnet-4-6` |
+| `ha_url` | Home Assistant URL for API calls | `http://homeassistant:8123` |
+| `anthropic_api_key` | **Optional.** Set this only if you want to bill an API key instead of your Pro/Max subscription. Leave empty to use subscription login. | _(empty)_ |
+
+## Login (subscription)
+
+The addon defaults to your **Claude Pro/Max subscription** — no API costs.
+On first start the terminal tells you to run `/login`; pick the
+"Claude account" option and open the printed link in your browser.
 
 ## What Claude can access
 

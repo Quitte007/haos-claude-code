@@ -1,6 +1,6 @@
 name: "Claude Code CLI"
-description: "Claude Code AI assistant with full access to your Home Assistant configuration"
-version: "1.0.0"
+description: "Claude Code AI assistant (Pro/Max subscription) with full access to your Home Assistant configuration"
+version: "1.1.0"
 slug: "claude_code"
 init: false
 arch:
@@ -12,18 +12,18 @@ startup: services
 boot: manual
 
 options:
-  anthropic_api_key: ""
   ha_url: "http://homeassistant:8123"
   claude_model: "claude-sonnet-4-6"
   terminal_cols: 220
   terminal_rows: 50
+  anthropic_api_key: ""
 
 schema:
-  anthropic_api_key: str
   ha_url: str
   claude_model: str
   terminal_cols: int
   terminal_rows: int
+  anthropic_api_key: "str?"
 
 ports:
   7681/tcp: null
@@ -49,5 +49,3 @@ hassio_role: manager
 environment:
   TERM: xterm-256color
   COLORTERM: truecolor
-
-image: "ghcr.io/{image}"

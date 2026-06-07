@@ -1,18 +1,26 @@
 #!/usr/bin/with-contenv bashio
 
 # Read addon options
-ANTHROPIC_API_KEY=$(bashio::config 'anthropic_api_key')
 HA_URL=$(bashio::config 'ha_url')
 MODEL=$(bashio::config 'claude_model')
-COLS=$(bashio::config 'terminal_cols')
-ROWS=$(bashio::config 'terminal_rows')
 
-export ANTHROPIC_API_KEY
-export HOME=/root
-
-# Give Claude access to HA config and supervisor
+# Persist Claude credentials across restarts in /data (HA persistent volume)
+export HOME=/data
+export ANTHROPIC_MODEL="${MODEL}"
 export HA_URL
 export SUPERVISOR_TOKEN="${SUPERVISOR_TOKEN}"
+
+# Only export an API key if the user explicitly set one.
+# Otherwise Claude uses the Pro/Max subscription login stored in /data/.claude.
+if bashio::config.has_value 'anthropic_api_key'; then
+    ANTHROPIC_API_KEY=$(bashio::config 'anthropic_api_key')
+    export ANTHROPIC_API_KEY
+    bashio::log.info "Using Anthropic API key from config."
+else
+    bashio::log.info "No API key set — using Pro/Max subscription login (run /login on first start)."
+fi
+
+mkdir -p /data/.claude
 
 bashio::log.info "Starting Claude Code terminal on port 7681..."
 
