@@ -33,6 +33,7 @@ if [ -f /data/.claude/.credentials.json ] || [ -n "${ANTHROPIC_API_KEY}" ]; then
     LOGGED_IN=1
 fi
 
+# ── Banner ────────────────────────────────────────────────────────────────────
 cat << 'EOF'
 ╔══════════════════════════════════════════════════════════════╗
 ║           Claude Code — Home Assistant Edition               ║
@@ -57,11 +58,36 @@ if [ "${LOGGED_IN}" -eq 0 ]; then
 EOF
 fi
 
-# Loop so that if claude exits (e.g. after /login or a crash) the terminal
-# restarts it instead of dropping to an empty shell.
-while true; do
-    claude --dangerously-skip-permissions
+# ── Session picker ────────────────────────────────────────────────────────────
+# Show running sessions so the user can pick one to reattach
+EXISTING=$(tmux list-sessions -F "  • #{session_name}  (#{?session_attached,attached,idle}, running #{t:session_activity})" 2>/dev/null)
+
+if [ -n "$EXISTING" ]; then
+    echo "Running tmux sessions:"
+    echo "$EXISTING"
     echo ""
-    echo "Claude exited. Restarting in 3s... (close the tab to stop)"
-    sleep 3
-done
+fi
+
+echo "Session name [main] (Enter for default, new name for new session):"
+read -r -t 10 SESSION_INPUT
+SESSION_NAME="${SESSION_INPUT:-main}"
+# Sanitize: spaces → dashes, lowercase
+SESSION_NAME=$(echo "$SESSION_NAME" | tr ' ' '-' | tr '[:upper:]' '[:lower:]')
+
+echo ""
+echo "→ Connecting to session: claude-ha-${SESSION_NAME}"
+echo "  (Tab schließen lässt die Session weiterlaufen)"
+echo "  (tmux detach: Ctrl+B dann D)"
+echo ""
+
+# ── Launch inside tmux ────────────────────────────────────────────────────────
+# -A = attach if exists, create if not
+# -s = session name
+# The inner loop restarts claude if it exits (e.g. after /login)
+tmux new-session -A -s "claude-ha-${SESSION_NAME}" \
+    "while true; do
+        claude --dangerously-skip-permissions
+        echo ''
+        echo 'Claude exited. Restarting in 3s... (Ctrl+C to stay in shell)'
+        sleep 3
+    done"

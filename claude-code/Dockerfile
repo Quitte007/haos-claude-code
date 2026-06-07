@@ -6,6 +6,7 @@ RUN apk add --no-cache \
     nodejs \
     npm \
     ttyd \
+    tmux \
     git \
     curl \
     jq \
