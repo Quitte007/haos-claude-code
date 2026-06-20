@@ -11,7 +11,11 @@ RUN apk add --no-cache \
     curl \
     jq \
     python3 \
-    bash
+    bash \
+    smartmontools \
+    lsblk \
+    util-linux \
+    iproute2
 
 # Install Claude Code CLI globally
 RUN npm install -g @anthropic-ai/claude-code@latest
