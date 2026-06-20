@@ -24,6 +24,14 @@ if [ ! -f /data/CLAUDE.md ]; then
     echo "[Claude Code Addon] Deployed HA instructions to /data/CLAUDE.md"
 fi
 
+# Deploy tmux config on first run only — same update-safe pattern.
+# Enables mouse support, clipboard via OSC 52, scroll buffer, statusbar.
+if [ ! -f /data/.tmux.conf ]; then
+    cp /opt/tmux.conf /data/.tmux.conf
+    echo "[Claude Code Addon] Deployed tmux config to /data/.tmux.conf"
+fi
+export TMUX_CONFIG=/data/.tmux.conf
+
 # Set working directory to HA config (path differs across HA versions)
 cd /homeassistant 2>/dev/null || cd /config 2>/dev/null || cd /data
 
@@ -84,7 +92,7 @@ echo ""
 # -A = attach if exists, create if not
 # -s = session name
 # The inner loop restarts claude if it exits (e.g. after /login)
-tmux new-session -A -s "claude-ha-${SESSION_NAME}" \
+tmux -f /data/.tmux.conf new-session -A -s "claude-ha-${SESSION_NAME}" \
     "while true; do
         claude --dangerously-skip-permissions
         echo ''
