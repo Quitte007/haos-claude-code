@@ -1,6 +1,6 @@
 name: "Claude Code CLI"
 description: "Claude Code AI assistant (Pro/Max subscription) with full access to your Home Assistant configuration"
-version: "1.7.0"
+version: "1.8.0"
 slug: "claude_code"
 init: false
 arch:
@@ -45,6 +45,17 @@ map:
   - addon_config:rw
   - all_addon_configs:ro
   - addons:ro
+
+devices:
+  - /dev/sda
+  - /dev/sdb
+  - /dev/sdc
+  - /dev/mmcblk0
+  - /dev/nvme0
+  - /dev/sg0
+  - /dev/sg1
+  - /dev/sg2
+  - /dev/sg3
 
 full_access: true
 
