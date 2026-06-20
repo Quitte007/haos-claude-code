@@ -13,9 +13,23 @@ RUN apk add --no-cache \
     python3 \
     bash \
     smartmontools \
-    lsblk \
     util-linux \
-    iproute2
+    iproute2 \
+    ntfs-3g \
+    ntfs-3g-progs \
+    exfatprogs \
+    btrfs-progs \
+    xfsprogs \
+    e2fsprogs \
+    e2fsprogs-extra \
+    udisks2 \
+    hdparm \
+    attr \
+    eudev \
+    hwids-udev \
+    findmnt \
+    blkid \
+    lsblk
 
 # Install Claude Code CLI globally
 RUN npm install -g @anthropic-ai/claude-code@latest
