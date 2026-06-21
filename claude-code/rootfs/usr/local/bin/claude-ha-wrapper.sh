@@ -93,7 +93,7 @@ echo ""
 # -s = session name
 # The inner loop restarts claude if it exits (e.g. after /login)
 tmux -f /data/.tmux.conf new-session -A -s "claude-ha-${SESSION_NAME}" \
-    "while true; do
+    "export IS_SANDBOX=1; export HOME=/data; export TERM=xterm-256color; export PATH=/usr/local/bin:/usr/bin:/bin; while true; do
         claude --dangerously-skip-permissions
         echo ''
         echo 'Claude exited. Restarting in 3s... (Ctrl+C to stay in shell)'
