@@ -1,6 +1,6 @@
-name: "Claude Code CLI"
+﻿name: "Claude Code CLI"
 description: "Claude Code AI assistant (Pro/Max subscription) with full access to your Home Assistant configuration"
-version: "1.8.0"
+version: "1.9.0"
 slug: "claude_code"
 init: false
 arch:
@@ -80,3 +80,4 @@ hassio_role: manager
 environment:
   TERM: xterm-256color
   COLORTERM: truecolor
+
