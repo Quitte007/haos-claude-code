@@ -7,7 +7,7 @@ fi
 
 CODEC=$(bashio::config 'codec')
 LATENCY=$(bashio::config 'latency')
-LOG_LEVEL=$(bashio::config 'log_level')
+LOG_LEVEL=$(bashio::config 'bridge_log_level')
 EXTRA=$(bashio::config 'extra_args_aircast')
 
 # -Z = Foreground ohne interaktive Konsole (Pflicht im Container)

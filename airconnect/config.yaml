@@ -1,6 +1,6 @@
 name: "AirConnect"
 description: "AirPlay-Bridge: macht Chromecast- (aircast) und UPnP/Sonos-Geräte (airupnp) als AirPlay-Speaker sichtbar — z.B. für Music Assistant AirPlay Sync Groups"
-version: "1.0.0"
+version: "1.0.1"
 slug: "airconnect"
 url: "https://github.com/Quitte007/haos-claude-code"
 init: false
@@ -21,7 +21,8 @@ options:
   enable_airupnp: false
   codec: "flc"
   latency: "1000:2000"
-  log_level: "warn"
+  # NICHT "log_level" nennen — reservierter Options-Name des hassio-addons-Base-Images!
+  bridge_log_level: "warn"
   extra_args_aircast: ""
   extra_args_airupnp: ""
 
@@ -30,6 +31,6 @@ schema:
   enable_airupnp: bool
   codec: list(flc|flc:5|mp3|mp3:320|wav|pcm)
   latency: str
-  log_level: list(error|warn|info|debug|sdebug)
+  bridge_log_level: list(error|warn|info|debug|sdebug)
   extra_args_aircast: str
   extra_args_airupnp: str

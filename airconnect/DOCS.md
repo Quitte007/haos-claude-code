@@ -23,7 +23,7 @@ Cast-/UPnP-Discovery (SSDP) hinter Docker-NAT nicht funktionieren.
 | `enable_airupnp` | UPnP/Sonos-Bridge starten | `false` |
 | `codec` | Audio-Codec zum Zielgerät: `flc` (FLAC, verlustfrei), `flc:5` (FLAC stärker komprimiert), `mp3`/`mp3:320`, `wav`, `pcm` | `flc` |
 | `latency` | Puffer in ms als `rtp:http`, z.B. `1000:2000`. Höher = stabiler, träger. Leer = AirConnect-Default | `1000:2000` |
-| `log_level` | `error`, `warn`, `info`, `debug`, `sdebug` | `warn` |
+| `bridge_log_level` | AirConnect-Loglevel: `error`, `warn`, `info`, `debug`, `sdebug` | `warn` |
 | `extra_args_aircast` | Zusätzliche CLI-Argumente für aircast | _(leer)_ |
 | `extra_args_airupnp` | Zusätzliche CLI-Argumente für airupnp | _(leer)_ |
 
