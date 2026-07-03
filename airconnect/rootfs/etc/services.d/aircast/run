@@ -1,0 +1,23 @@
+#!/usr/bin/with-contenv bashio
+
+if ! bashio::config.true 'enable_aircast'; then
+    bashio::log.info "aircast ist deaktiviert (enable_aircast: false)."
+    exec sleep infinity
+fi
+
+CODEC=$(bashio::config 'codec')
+LATENCY=$(bashio::config 'latency')
+LOG_LEVEL=$(bashio::config 'log_level')
+EXTRA=$(bashio::config 'extra_args_aircast')
+
+# -Z = Foreground ohne interaktive Konsole (Pflicht im Container)
+ARGS="-Z -c ${CODEC} -d all=${LOG_LEVEL}"
+
+if bashio::var.has_value "${LATENCY}"; then
+    ARGS="${ARGS} -l ${LATENCY}"
+fi
+
+bashio::log.info "Starte aircast (Cast-Geräte → AirPlay): aircast ${ARGS} ${EXTRA}"
+
+# shellcheck disable=SC2086
+exec /usr/bin/aircast ${ARGS} ${EXTRA}

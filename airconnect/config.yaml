@@ -1,0 +1,35 @@
+name: "AirConnect"
+description: "AirPlay-Bridge: macht Chromecast- (aircast) und UPnP/Sonos-Geräte (airupnp) als AirPlay-Speaker sichtbar — z.B. für Music Assistant AirPlay Sync Groups"
+version: "1.0.0"
+slug: "airconnect"
+url: "https://github.com/Quitte007/haos-claude-code"
+init: false
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+startup: services
+boot: auto
+
+# host_network ist Pflicht: AirPlay (mDNS/Bonjour) und Cast/UPnP-Discovery (SSDP)
+# funktionieren nicht hinter Docker-NAT
+host_network: true
+
+options:
+  enable_aircast: true
+  enable_airupnp: false
+  codec: "flc"
+  latency: "1000:2000"
+  log_level: "warn"
+  extra_args_aircast: ""
+  extra_args_airupnp: ""
+
+schema:
+  enable_aircast: bool
+  enable_airupnp: bool
+  codec: list(flc|flc:5|mp3|mp3:320|wav|pcm)
+  latency: str
+  log_level: list(error|warn|info|debug|sdebug)
+  extra_args_aircast: str
+  extra_args_airupnp: str

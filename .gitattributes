@@ -2,3 +2,5 @@
 *.sh text eol=lf
 claude-code/rootfs/etc/services.d/*/run text eol=lf
 claude-code/rootfs/etc/services.d/*/finish text eol=lf
+airconnect/rootfs/etc/services.d/*/run text eol=lf
+airconnect/rootfs/etc/services.d/*/finish text eol=lf

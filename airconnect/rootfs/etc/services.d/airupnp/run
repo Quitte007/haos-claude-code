@@ -1,0 +1,23 @@
+#!/usr/bin/with-contenv bashio
+
+if ! bashio::config.true 'enable_airupnp'; then
+    bashio::log.info "airupnp ist deaktiviert (enable_airupnp: false)."
+    exec sleep infinity
+fi
+
+CODEC=$(bashio::config 'codec')
+LATENCY=$(bashio::config 'latency')
+LOG_LEVEL=$(bashio::config 'log_level')
+EXTRA=$(bashio::config 'extra_args_airupnp')
+
+# -Z = Foreground ohne interaktive Konsole (Pflicht im Container)
+ARGS="-Z -c ${CODEC} -d all=${LOG_LEVEL}"
+
+if bashio::var.has_value "${LATENCY}"; then
+    ARGS="${ARGS} -l ${LATENCY}"
+fi
+
+bashio::log.info "Starte airupnp (UPnP/Sonos-Geräte → AirPlay): airupnp ${ARGS} ${EXTRA}"
+
+# shellcheck disable=SC2086
+exec /usr/bin/airupnp ${ARGS} ${EXTRA}

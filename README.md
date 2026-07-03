@@ -1,9 +1,19 @@
+# Claude Code Add-ons — Home Assistant Addon-Repository
+
+![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Addon-blue)
+
+## Add-ons in diesem Repository
+
+| Addon | Beschreibung |
+|-------|-------------|
+| **Claude Code CLI** | Claude Code AI-Assistent direkt in HA — Terminal im Browser |
+| **AirConnect** | AirPlay-Bridge für Chromecast- & UPnP/Sonos-Geräte ([Doku](airconnect/DOCS.md)) |
+
+---
+
 # Claude Code — Home Assistant Addon
 
 Claude Code CLI als Addon direkt in Home Assistant — KI-gestütztes Konfigurieren und Troubleshooten deines HAOS, direkt im Browser, ohne externen PC.
-
-![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Addon-blue)
-![Version](https://img.shields.io/badge/version-1.4.0-green)
 
 ---
 
